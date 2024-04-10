@@ -41,7 +41,6 @@ resource "random_uuid" "cluster_id" {
 
 locals {
   config = {
-    saintycheck              = "yes"
     enable_slurm_gcp_plugins = var.enable_slurm_gcp_plugins
     enable_bigquery_load     = var.enable_bigquery_load
     cloudsql_secret          = var.cloudsql_secret
@@ -78,7 +77,8 @@ locals {
     output_dir              = var.enable_hybrid ? local.output_dir : null
     install_dir             = var.enable_hybrid ? local.install_dir : null
     slurm_control_host      = var.enable_hybrid ? var.slurm_control_host : null
-    slurm_control_host_port = var.enable_hybrid ? local.slurm_control_host_port : null
+    #slurm_control_host_port = var.enable_hybrid ? local.slurm_control_host_port : null
+    slurm_control_host_port = "6817"
     slurm_control_addr      = var.enable_hybrid ? var.slurm_control_addr : null
     slurm_bin_dir           = var.enable_hybrid ? local.slurm_bin_dir : null
     slurm_log_dir           = var.enable_hybrid ? local.slurm_log_dir : null
@@ -102,7 +102,7 @@ locals {
 
   bucket_path = format("%s/%s", data.google_storage_bucket.this.url, local.bucket_dir)
 
-  slurm_control_host_port = coalesce(var.slurm_control_host_port, "6818")
+  #slurm_control_host_port = coalesce(var.slurm_control_host_port, "6818")
 
   google_app_cred_path = var.google_app_cred_path != null ? abspath(var.google_app_cred_path) : null
   slurm_bin_dir        = var.slurm_bin_dir != null ? abspath(var.slurm_bin_dir) : null
@@ -117,6 +117,8 @@ locals {
 
   output_dir  = can(coalesce(var.output_dir)) ? abspath(var.output_dir) : abspath(".")
   install_dir = can(coalesce(var.install_dir)) ? abspath(var.install_dir) : local.output_dir
+
+  slurm_control_host_port = "6817"
 }
 
 resource "google_storage_bucket_object" "config" {
