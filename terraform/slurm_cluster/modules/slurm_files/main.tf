@@ -41,6 +41,7 @@ resource "random_uuid" "cluster_id" {
 
 locals {
   config = {
+    saintycheck              = "yes"
     enable_slurm_gcp_plugins = var.enable_slurm_gcp_plugins
     enable_bigquery_load     = var.enable_bigquery_load
     cloudsql_secret          = var.cloudsql_secret
